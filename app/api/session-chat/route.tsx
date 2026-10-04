@@ -71,13 +71,6 @@ export async function GET(req: NextRequest) {
         .where(eq(sessionChatTable.createdBy, userEmail))
         .orderBy(desc(sessionChatTable.id));
 
-      if (!result || result.length === 0) {
-        return NextResponse.json(
-          { error: "Session not found" }, 
-          { status: 404 }
-        );
-      }
-      
       return NextResponse.json(result);
     } else {
       const result = await db

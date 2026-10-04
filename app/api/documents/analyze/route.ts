@@ -133,9 +133,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(parseReport(response));
   } catch (error) {
     console.error("Medical document analysis failed:", error);
+    const status =
+      error && typeof error === "object" && "status" in error
+        ? Number((error as { status?: unknown }).status)
+        : 0;
+    const isUpstreamFailure = [404, 429, 500, 502, 503, 504].includes(status);
     return NextResponse.json(
-      { error: "The report could not be analyzed. Please try again." },
-      { status: 500 },
+      {
+        error: isUpstreamFailure
+          ? "The AI document service is currently unavailable. Check GEMINI_MODEL and try again."
+          : "The report could not be analyzed. Please try again.",
+      },
+      { status: isUpstreamFailure ? 503 : 500 },
     );
   }
 }

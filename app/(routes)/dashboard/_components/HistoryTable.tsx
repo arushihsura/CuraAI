@@ -35,7 +35,7 @@ function HistoryTable({ historyList }: Props) {
             <TableRow key={record.id ?? `${record.sessionId}-${index}`}>
               <TableCell className="font-medium">{record.selectedDoctor.specialist}</TableCell>
               <TableCell>{record.note}</TableCell>
-              <TableCell>{moment(new Date(record.createdOn)).fromNow()}</TableCell>
+              <TableCell>{formatRelativeDate(record.createdOn)}</TableCell>
               <TableCell className="text-right">
                  <ViewReportDialog record={record}/>
               </TableCell>
@@ -45,6 +45,12 @@ function HistoryTable({ historyList }: Props) {
       </Table>
     </div>
   );
+}
+
+function formatRelativeDate(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date unavailable";
+  return moment(date).fromNow();
 }
 
 export default HistoryTable;

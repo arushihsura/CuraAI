@@ -2,6 +2,7 @@ import React from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -56,6 +57,9 @@ function ViewReportDialog({ record }: Props) {
           <DialogTitle className="text-center text-2xl font-semibold text-slate-950 dark:text-white">
               CuraAi consultation report
           </DialogTitle>
+          <DialogDescription className="text-center">
+            Review the informational summary from this consultation.
+          </DialogDescription>
         </DialogHeader>
 
         {/* Session Info */}
@@ -65,7 +69,7 @@ function ViewReportDialog({ record }: Props) {
             right={`User: ${report.user || "Anonymous"}`}
           />
           <TwoCol
-            left={`Consulted On: ${moment(record.createdOn).format(
+            left={`Consulted On: ${moment(new Date(record.createdOn)).format(
               "MMMM Do YYYY, h:mm a"
             )}`}
             right={`Agent: ${report.agent}`}
